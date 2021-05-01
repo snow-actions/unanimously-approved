@@ -1,11 +1,14 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Unanimously Approved'
+description: 'Approved by all reviewers'
+author: 'SnowCait'
 inputs:
-  milliseconds: # change this
+  token:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: GitHub token
+    default: ${{ github.token }}
 runs:
   using: 'node12'
   main: 'dist/index.js'
+branding:
+  icon: 'check-circle'
+  color: 'green'
