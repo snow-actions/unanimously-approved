@@ -13,10 +13,6 @@ async function run(): Promise<void> {
         core.debug(`PR#${pr.number}`)
         core.debug(`requested reviewers: ${pr.requested_reviewers.length}`)
 
-        if (pr.requested_reviewers.length > 0) {
-            throw new Error('Some reviewers are still in review.')
-        }
-
         const octokit = github.getOctokit(token)
         const { data: reviews } = await octokit.pulls.listReviews({
             ...github.context.repo,
