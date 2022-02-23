@@ -1,0 +1,30 @@
+name: npm-check-updates
+
+on:
+  push:
+    paths:
+      - .github/workflows/npm-check-updates.yml
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - name: Versions
+        run: |
+          node --version
+          npm --version
+      - run: npm install -g npm-check-updates
+      - run: ncu -u
+      - run: npm install
+      - name: Diff
+        id: diff
+        run: |
+          git add -N .
+          git diff
