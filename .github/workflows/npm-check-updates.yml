@@ -47,8 +47,8 @@ jobs:
       - name: Create PR
         run: |
           set -x
-          if [ $(gh pr list --base main --head npm-check-updates | wc -l) -eq 0 ]; then
-            gh pr create --base main --head npm-check-updates --title 'npm-check-updates' --body '' --label dependencies --reviewer SnowCait
+          if [ $(gh pr list --base ${GITHUB_REF_NAME} --head npm-check-updates | wc -l) -eq 0 ]; then
+            gh pr create --base ${GITHUB_REF_NAME} --head npm-check-updates --title 'npm-check-updates' --body '' --label dependencies --assignee ${GITHUB_ACTOR}
           fi
         env:
           GH_TOKEN: ${{ github.token }}

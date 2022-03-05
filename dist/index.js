@@ -45,7 +45,7 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const token = core.getInput('token');
-            const { pull_request: pr } = (github.context.eventName == 'pull_request')
+            const { pull_request: pr } = github.context.eventName == 'pull_request'
                 ? github.context.payload
                 : github.context.payload;
             core.debug(`PR#${pr.number}`);
@@ -54,15 +54,18 @@ function run() {
                 throw new Error('Some reviewers are still in review.');
             }
             const octokit = github.getOctokit(token);
-            const { data: reviews } = yield octokit.rest.pulls.listReviews(Object.assign(Object.assign({}, github.context.repo), { pull_number: pr.number, per_page: 100 }));
+            const { data: reviews } = yield octokit.rest.pulls.listReviews(Object.assign(Object.assign({}, github.context.repo), { pull_number: pr.number, per_page: 100 // TODO: over 100
+             }));
             core.debug(`reviews: ${reviews.length}`);
             if (reviews.length == 0) {
                 throw new Error('There is no reviewers.');
             }
-            let latestReviews = reviews.reverse()
+            let latestReviews = reviews
+                .reverse()
                 .filter(review => { var _a; return ((_a = review.user) === null || _a === void 0 ? void 0 : _a.id) != pr.user.id; })
                 .filter(review => review.state.toLowerCase() != 'commented')
                 .filter((review, index, array) => {
+                // unique
                 return array.findIndex(x => { var _a, _b; return ((_a = review.user) === null || _a === void 0 ? void 0 : _a.id) === ((_b = x.user) === null || _b === void 0 ? void 0 : _b.id); }) === index;
             });
             latestReviews.forEach(review => {
