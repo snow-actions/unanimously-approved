@@ -26,7 +26,7 @@ jobs:
           set -x
           version=$(npm --no-git-tag-version version $SEMANTIC)
           echo "::set-output name=version::${version}"
-          sed -i -e "s|snow-actions/unanimously-approved@v[.0-9]+|snow-actions/unanimously-approved@${version}|g"
+          sed -i -e "s|snow-actions/unanimously-approved@v[.0-9]+|snow-actions/unanimously-approved@${version}|g" README.md
           git diff
         env:
           SEMANTIC: ${{ github.event.inputs.semantic }}
