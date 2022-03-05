@@ -54,7 +54,7 @@ function approved(token) {
             return false;
         }
         const octokit = github.getOctokit(token);
-        const { data: reviews } = yield octokit.rest.pulls.listReviews(Object.assign(Object.assign({}, github.context.repo), { pull_number: pr.number, per_page: 100 // TODO: over 100
+        const { data: reviews } = yield octokit.rest.pulls.listReviews(Object.assign(Object.assign({}, github.context.repo), { pull_number: pr.number, per_page: 100 // NOTE: seems not over 100
          }));
         core.debug(`reviews: ${reviews.length}`);
         if (reviews.length == 0) {
@@ -132,9 +132,11 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const token = core.getInput('token');
+            const statusContext = core.getInput('status-context');
+            const statusDescription = core.getInput('status-description');
             core.debug(JSON.stringify(github.context));
             const octokit = github.getOctokit(token);
-            yield octokit.rest.repos.createCommitStatus(Object.assign(Object.assign({}, github.context.repo), { sha: (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.head.sha, state: (yield (0, approved_1.approved)(token)) ? 'success' : 'failure', context: 'review passing' }));
+            yield octokit.rest.repos.createCommitStatus(Object.assign(Object.assign({}, github.context.repo), { sha: (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.head.sha, state: (yield (0, approved_1.approved)(token)) ? 'success' : 'failure', context: statusContext, description: statusDescription, target_url: `${github.context.serverUrl}/${github.context.repo.owner}/${github.context.repo.repo}/actions/runs/${github.context.runId}` }));
         }
         catch (error) {
             if (error instanceof Error)

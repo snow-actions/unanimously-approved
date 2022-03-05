@@ -3,9 +3,17 @@ description: 'Approved by all reviewers'
 author: 'SnowCait'
 inputs:
   token:
-    required: true
+    required: false
     description: GitHub token
     default: ${{ github.token }}
+  status-context:
+    required: false
+    description: Status context (use this at branch protection rules)
+    default: review passing
+  status-description:
+    required: false
+    description: Status description
+    default: by unanimously-approved
 runs:
   using: 'node12'
   main: 'dist/index.js'
