@@ -37,3 +37,8 @@ Add `review passing` status to branch protection rules.
 * :heavy_check_mark: Success when all reviewers approve
 * :x: Fail when some reviewers do not approve
 * :x: Fail when there is no reviewers
+
+## Inputs
+
+Optional.
+See [action.yml](action.yml)
