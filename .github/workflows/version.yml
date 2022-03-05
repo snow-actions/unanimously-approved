@@ -1,0 +1,43 @@
+name: Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      semantic:
+        description: Semantic versioning
+        required: true
+        default: patch
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  version-up:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 1
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Version up
+        id: version
+        run: |
+          set -x
+          version=$(npm --no-git-tag-version version $SEMANTIC)
+          echo "::set-output name=version::${version}"
+          sed -i -e "s/snow-actions/unanimously-approved@v[.0-9]+/snow-actions/unanimously-approved@${version}/g"
+          git diff
+        env:
+          SEMANTIC: ${{ github.event.inputs.semantic }}
+      - name: Commit & PR
+        run: |
+          set -x
+          branch="release/${VERSION}"
+          git switch -c ${branch}
+          git add .
+          git commit -m "${VERSION}"
+          git push
+          gh pr create --base ${GITHUB_REF_NAME} --head ${branch} --assignee ${GITHUB_ACTOR} --title ${VERSION} --body ''
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
