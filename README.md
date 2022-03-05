@@ -24,7 +24,7 @@ jobs:
       - uses: snow-actions/unanimously-approved@v1.0.0
 ```
 
-Add `review passing` status to branch protection rules.
+Add `review passing` status to branch protection rules.  
 (`unanimously-approved` status always success because each event creates status and outdated status prevents merge.)
 
 ## Support events
@@ -40,5 +40,5 @@ Add `review passing` status to branch protection rules.
 
 ## Inputs
 
-Optional.
+Optional.  
 See [action.yml](action.yml)
