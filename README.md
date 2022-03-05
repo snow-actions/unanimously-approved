@@ -18,10 +18,14 @@ on:
 jobs:
   unanimously-approved:
     runs-on: ubuntu-latest
+    timeout-minutes: 1
 
     steps:
       - uses: snow-actions/unanimously-approved@v1.0.0
 ```
+
+Add `review passing` status to branch protection rules.
+(`unanimously-approved` status always success because each event creates status and outdated status prevents merge.)
 
 ## Support events
 
