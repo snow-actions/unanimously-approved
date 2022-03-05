@@ -18,7 +18,7 @@ async function run(): Promise<void> {
         }
 
         const octokit = github.getOctokit(token)
-        const { data: reviews } = await octokit.pulls.listReviews({
+        const { data: reviews } = await octokit.rest.pulls.listReviews({
             ...github.context.repo,
             pull_number: pr.number,
             per_page: 100, // TODO: over 100
@@ -47,7 +47,7 @@ async function run(): Promise<void> {
 
         core.debug('All reviewers approve.')
     } catch (error) {
-        core.setFailed(error.message)
+        if (error instanceof Error) core.setFailed(error.message)
     }
 }
 
