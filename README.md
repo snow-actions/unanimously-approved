@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 1
 
     steps:
-      - uses: snow-actions/unanimously-approved@v1.0.0
+      - uses: snow-actions/unanimously-approved@v1.0.1
 ```
 
 Add `review passing` status to branch protection rules.  
