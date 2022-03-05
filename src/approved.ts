@@ -23,7 +23,7 @@ export async function approved(token: string): Promise<boolean> {
   const {data: reviews} = await octokit.rest.pulls.listReviews({
     ...github.context.repo,
     pull_number: pr.number,
-    per_page: 100 // TODO: over 100
+    per_page: 100 // NOTE: seems not over 100
   })
 
   core.debug(`reviews: ${reviews.length}`)
