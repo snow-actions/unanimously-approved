@@ -26,7 +26,7 @@ jobs:
           set -x
           version=$(npm --no-git-tag-version version $SEMANTIC)
           echo "::set-output name=version::${version}"
-          sed -i -e "s/snow-actions/unanimously-approved@v[.0-9]+/snow-actions/unanimously-approved@${version}/g"
+          sed -i -e "s|snow-actions/unanimously-approved@v[.0-9]\+|snow-actions/unanimously-approved@${version}|g" README.md
           git diff
         env:
           SEMANTIC: ${{ github.event.inputs.semantic }}
@@ -34,10 +34,13 @@ jobs:
         run: |
           set -x
           branch="release/${VERSION}"
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git switch -c ${branch}
           git add .
           git commit -m "${VERSION}"
-          git push
+          git push origin ${branch}
           gh pr create --base ${GITHUB_REF_NAME} --head ${branch} --assignee ${GITHUB_ACTOR} --title ${VERSION} --body ''
         env:
           VERSION: ${{ steps.version.outputs.version }}
+          GH_TOKEN: ${{ github.token }}
