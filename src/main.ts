@@ -11,7 +11,7 @@ async function run(): Promise<void> {
     const octokit = github.getOctokit(token)
     await octokit.rest.repos.createCommitStatus({
       ...github.context.repo,
-      sha: github.context.sha,
+      sha: github.context.payload.pull_request?.head.sha,
       state: (await approved(token)) ? 'success' : 'failure',
       context: 'review passing'
     })
