@@ -1,4 +1,4 @@
-name: Version
+name: Version up
 
 on:
   workflow_dispatch:
@@ -16,7 +16,7 @@ on:
 jobs:
   version-up:
     runs-on: ubuntu-20.04
-    timeout-minutes: 1
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v3
@@ -26,16 +26,20 @@ jobs:
           set -x
           version=$(npm --no-git-tag-version version $SEMANTIC)
           echo "::set-output name=version::${version}"
-          sed -i -e "s|snow-actions/unanimously-approved@v[.0-9]\+|snow-actions/unanimously-approved@${version}|g" README.md
+          sed -i -e "s|${GITHUB_REPOSITORY}@v[.0-9]\+|${GITHUB_REPOSITORY}@${version}|g" README.md
           git diff
         env:
           SEMANTIC: ${{ github.event.inputs.semantic }}
+      - uses: snow-actions/git-config-user@v1.0.0
+      - id: generate_token
+        uses: tibdex/github-app-token@v1.5.2
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Commit & PR
         run: |
           set -x
           branch="release/${VERSION}"
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git switch -c ${branch}
           git add .
           git commit -m "${VERSION}"
@@ -43,4 +47,4 @@ jobs:
           gh pr create --base ${GITHUB_REF_NAME} --head ${branch} --assignee ${GITHUB_ACTOR} --title ${VERSION} --body ''
         env:
           VERSION: ${{ steps.version.outputs.version }}
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
