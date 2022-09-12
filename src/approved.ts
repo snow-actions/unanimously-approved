@@ -12,9 +12,9 @@ export async function approved(token: string): Promise<boolean> {
       : (github.context.payload as PullRequestReviewEvent)
 
   core.debug(`PR#${pr.number}`)
-  core.debug(`requested reviewers: ${pr.requested_reviewers.length}`)
+  core.debug(`requested reviewers: ${pr.requested_reviewers.length + pr.requested_teams.length}`)
 
-  if (pr.requested_reviewers.length > 0) {
+  if (pr.requested_reviewers.length > 0 || pr.requested_teams.length > 0) {
     core.info('Some reviewers are still in review.')
     return false
   }
