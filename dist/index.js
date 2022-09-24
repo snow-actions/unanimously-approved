@@ -48,8 +48,8 @@ function approved(token) {
             ? github.context.payload
             : github.context.payload;
         core.debug(`PR#${pr.number}`);
-        core.debug(`requested reviewers: ${pr.requested_reviewers.length}`);
-        if (pr.requested_reviewers.length > 0) {
+        core.debug(`requested reviewers: ${pr.requested_reviewers.length + pr.requested_teams.length}`);
+        if (pr.requested_reviewers.length > 0 || pr.requested_teams.length > 0) {
             core.info('Some reviewers are still in review.');
             return false;
         }
