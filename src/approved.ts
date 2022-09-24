@@ -1,9 +1,6 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import {
-  PullRequestEvent,
-  PullRequestReviewEvent
-} from '@octokit/webhooks-definitions/schema'
+import {PullRequestEvent, PullRequestReviewEvent} from '@octokit/webhooks-definitions/schema'
 
 export async function approved(token: string): Promise<boolean> {
   const {pull_request: pr} =
@@ -46,9 +43,7 @@ export async function approved(token: string): Promise<boolean> {
     core.debug(`${review.user?.login} is ${review.state.toLowerCase()}.`)
   })
 
-  if (
-    !latestReviews.every(review => review.state.toLowerCase() == 'approved')
-  ) {
+  if (!latestReviews.every(review => review.state.toLowerCase() == 'approved')) {
     core.info('Some reviewers do not approve.')
     return false
   }
