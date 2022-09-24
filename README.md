@@ -27,10 +27,21 @@ jobs:
 Add `review passing` status to branch protection rules.  
 (`unanimously-approved` status always success because each event creates status and outdated status prevents merge.)
 
-## Support events
+## Supported
 
-* `pull_request`
-* `pull_request_review`
+### Runners
+
+See [ci.yml](.github/workflows/ci.yml)
+
+- `ubuntu-*`
+- `windows-*`
+- `macos-*`
+- `self-hosted`
+
+### Events
+
+- `pull_request`
+- `pull_request_review`
 
 ## Success or Fail
 

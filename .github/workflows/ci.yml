@@ -1,0 +1,48 @@
+name: CI
+on:
+  pull_request_target:
+    paths:
+      - .github/workflows/ci.yml
+      - dist/**
+      - src/**
+      - package.json
+      - package-lock.json
+  push:
+    branches:
+      - main
+
+jobs:
+  package:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - run: npm ci
+      - run: npm run format-check
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run package
+      - name: Diff
+        run: |
+          git add -N .
+          git diff --exit-code
+
+  test:
+    if: false # TODO: Implement test
+    strategy:
+      matrix:
+        runner:
+          - ubuntu-22.04
+          - ubuntu-20.04
+          - macos-12
+          - macos-11
+          - windows-2022
+          - windows-2019
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci
+      - run: npm test
