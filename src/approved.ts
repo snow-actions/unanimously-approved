@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import {PullRequestEvent, PullRequestReviewEvent} from '@octokit/webhooks-definitions/schema'
+import {PullRequestEvent, PullRequestReviewEvent} from '@octokit/webhooks-types'
 
 export async function approved(token: string): Promise<boolean> {
   const {pull_request: pr} =
