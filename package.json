@@ -1,6 +1,6 @@
 {
   "name": "unanimously-approved",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "Approved by all reviewers",
   "main": "lib/main.js",
