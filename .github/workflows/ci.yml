@@ -5,6 +5,7 @@ on:
       - .github/workflows/ci.yml
       - dist/**
       - src/**
+      - action.yml
       - package.json
       - package-lock.json
   push:
