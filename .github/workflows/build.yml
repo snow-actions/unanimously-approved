@@ -20,7 +20,8 @@ jobs:
         with:
           node-version: 16.x
       - run: npm install
-      - run: npm run all
+      - run: npm run build
+      - run: npm run package
       - name: Diff
         id: diff
         run: |
