@@ -128,8 +128,8 @@ const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const approved_1 = __nccwpck_require__(5417);
 function run() {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a;
         try {
             const token = core.getInput('token');
             const statusContext = core.getInput('status-context');
